@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { HttpMethods } from '../constants/httpMethod';
 import { getToken } from '../helpers/token';
+import acceptResponse from '../helpers/acceptResponse';
 
 interface UseFetchMethod<T> {
   isLoading: boolean;
@@ -23,8 +24,9 @@ function useFetchMethod<T>(
     const headers: Record<string, string> = {
       'Content-Type': 'application/json'
     }
-    if (includeToken) {
-      headers['Authorization'] = `Bearer ${getToken()}`;
+    const token = getToken();
+    if (includeToken && token != null && token != '') {
+      headers['Authorization'] = `Bearer ${token}`;
     }
     setIsLoading(true);
     fetch(url, {
@@ -32,7 +34,7 @@ function useFetchMethod<T>(
       method: method,
       body: JSON.stringify(body)
     })
-      .then(r => r.json())
+      .then(acceptResponse)
       .then(d => setData(d))
       .catch(e => setError(e))
       .finally(() => setIsLoading(false));
