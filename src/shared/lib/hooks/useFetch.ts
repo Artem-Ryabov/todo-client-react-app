@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
-import { HttpMethods } from '../constants/httpMethod';
+import { HttpMethods, httpMethods } from '../constants/httpMethod';
 import { getToken } from '../helpers/token';
 import acceptResponse from '../helpers/acceptResponse';
+import { Content } from '../models/Content';
 
 interface UseFetch<T> {
   isLoading: boolean;
-  data: T | null;
+  data: Content<T> | null;
   error: unknown;
 }
 
 function useFetch<T>(
   url: string,
-  method: HttpMethods,
+  method: HttpMethods = httpMethods.GET,
   body?: Record<string, unknown>,
+  params?: string,
   includeToken: boolean = true
 ): UseFetch<T> {
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<T | null>(null);
+  const [data, setData] = useState<Content<T> | null>(null);
   const [error, setError] = useState<unknown | null>(null);
 
   useEffect(() => {
@@ -28,9 +30,9 @@ function useFetch<T>(
       headers['Authorization'] = `Bearer ${token}`;
     }
     setIsLoading(true);
-    fetch(url, {
+    fetch(url + (params ?? ''), {
       headers,
-      method: method,
+      method,
       body: JSON.stringify(body)
     })
       .then(acceptResponse)

@@ -1,6 +1,6 @@
-export default function acceptResponse(r: Response): Promise<any> {
-  if (r.ok) {
-    return r.json();
+export default function acceptResponse(res: Response): Promise<any> {
+  if (res.ok) {
+    return res.json();
   }
-  throw new Error(r.statusText);
+  throw new Error(res.statusText);
 }

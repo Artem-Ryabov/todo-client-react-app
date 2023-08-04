@@ -1,21 +1,28 @@
 import { Priority } from '@/shared/lib/models/Priority';
+import { useState } from 'react';
+import { Todo } from './lib/models/Todo';
 
 interface TodoProps {
-  id: number;
-  priority: Priority;
-  note: string;
-  done: boolean;
-  markTodo: (id: number) => void;
+  todo: Todo;
+  markTodo: (id: number, done: boolean) => void;
   deleteTodo: (id: number) => void;
 }
 
-function TodoCard({ id, priority, note, done, markTodo: markTodo, deleteTodo }: TodoProps): JSX.Element {
+function TodoCard({
+  todo: { id, priority, note, done },
+  markTodo,
+  deleteTodo
+}: TodoProps): JSX.Element {
   return (
-    <div style={{display: 'flex', gap: '5px'}}>
-      <span>priority: {priority.name}</span>
+    <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+      <span>priority: {priority}</span>
       <span>{note}</span>
-      <input type='checkbox' checked={done} onChange={() => markTodo(id)} />
-      <button onClick={() => deleteTodo(id)}></button>
+      <input
+        type="checkbox"
+        checked={done}
+        onChange={() => markTodo(id, !done)}
+      />
+      <button onClick={() => deleteTodo(id)}>Delete</button>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import paths from '@/app/Router/paths';
+import paths from '@/app/lib/router/paths';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 

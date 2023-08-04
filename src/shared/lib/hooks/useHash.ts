@@ -3,17 +3,17 @@ import getHash from '../helpers/hash';
 
 interface UseHash {
   hash: string;
-  sethash: (data: string) => void
+  createHash: (data: string) => void
 }
 
 function useHash(): UseHash {
   const [hash, setHash] = useState('');
 
-  const sethash = useCallback((data: string) => {
+  const createHash = useCallback((data: string) => {
     getHash(data).then(d => setHash(d));
   }, [setHash]);
 
-  return { hash, sethash };
+  return { hash, createHash };
 }
 
 export default useHash;
